@@ -351,7 +351,7 @@
 
 <div id="particles" aria-hidden="true"></div>
 
-<button id="music-toggle" aria-pressed="false" aria-label="Activar música ambiental">
+<button id="music-toggle" aria-pressed="false" aria-label="Reproducir Solo Aquí de Airbag">
   <span class="note-icon">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
       <path d="M9 18V5l10-2v13" stroke-linecap="round" stroke-linejoin="round"/>
@@ -361,6 +361,7 @@
   </span>
   <span id="music-label">música</span>
 </button>
+<div id="yt-player" style="position:fixed; width:1px; height:1px; overflow:hidden; opacity:0; pointer-events:none;" aria-hidden="true"></div>
 
 <div class="step-dots" id="step-dots">
   <span class="dot" data-step="0"></span>
@@ -411,7 +412,7 @@
       <p>Gracias por todas las conversaciones, las risas, los momentos y por hacer que mis días sean un poquito más divertidos.</p>
       <p>Así que sí... oficialmente te debo unas flores de verdad JAJAJA 🌻</p>
       <p>Por ahora, acepta estas virtuales.</p>
-      <p class="signature">Con cariño,<br>tu amigo de Perú 🇵🇪<br>para Miniña 💛</p>
+      <p class="signature">Con cariño,<br>tu nenito jaja 🇵🇪<br>para Miniña 💛</p>
       <button class="btn-secondary" id="btn-go-final" style="margin-top:8px;">Continuar ✨</button>
     </div>
   </section>
@@ -420,7 +421,7 @@
   <section class="screen" id="screen-4">
     <div id="final-flowers" aria-hidden="true"></div>
     <h2 class="final-title display">Las flores son virtuales... pero el detalle es de verdad 💛🌻</h2>
-    <div class="final-sub">Para Mi Beba Preciosa - TE AMOOOOOO MUCHOOOO MAS QUE TUUU <3 ✨</div>
+    <div class="final-sub">Para Mi Beba Preciosa - TE AMOOOO MUCHOOOO MAS QUE TUUUU <3 ✨</div>
   </section>
 
 </div>
@@ -716,53 +717,51 @@
   }
 
   /* ============================================================
-     MUSICA AMBIENTAL (Web Audio API — sin archivos externos, sin autoplay)
+     MUSICA — "Solo Aquí" de Airbag, vía reproductor oficial de
+     YouTube incrustado (respeta los derechos de la banda).
+     No suena hasta que el usuario pulsa el botón.
      ============================================================ */
-  let audioCtx = null;
-  let musicNodes = null;
+  let ytPlayer = null;
+  let ytReady = false;
   let playing = false;
-
-  function buildAmbientPad(){
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const master = audioCtx.createGain();
-    master.gain.value = 0.0001;
-    master.connect(audioCtx.destination);
-
-    const freqs = [220.00, 277.18, 329.63]; // acorde brillante y cálido
-    freqs.forEach((f) => {
-      const osc = audioCtx.createOscillator();
-      osc.type = "triangle";
-      osc.frequency.value = f;
-      const g = audioCtx.createGain();
-      g.gain.value = 0.15;
-      osc.connect(g); g.connect(master); osc.start();
-    });
-
-    const lfo = audioCtx.createOscillator();
-    lfo.frequency.value = 0.12;
-    const lfoGain = audioCtx.createGain();
-    lfoGain.gain.value = 0.05;
-    lfo.connect(lfoGain); lfoGain.connect(master.gain); lfo.start();
-
-    return { master };
-  }
+  let pendingPlay = false;
 
   const musicBtn = $("#music-toggle");
   const musicLabel = $("#music-label");
 
+  // Carga el script oficial de la API de YouTube (solo cuando hace falta)
+  function loadYouTubeAPI(){
+    if(window.YT && window.YT.Player){ initYTPlayer(); return; }
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+    window.onYouTubeIframeAPIReady = initYTPlayer;
+  }
+
+  function initYTPlayer(){
+    ytPlayer = new YT.Player("yt-player", {
+      videoId: "PGI2geRBCy4", // AIRBAG - Solo Aquí - Vivo en Velez (oficial)
+      playerVars: { autoplay: 0, controls: 0 },
+      events: {
+        onReady: () => {
+          ytReady = true;
+          if(pendingPlay){ ytPlayer.playVideo(); pendingPlay = false; }
+        }
+      }
+    });
+  }
+
   musicBtn.addEventListener("click", () => {
-    if(!audioCtx){ musicNodes = buildAmbientPad(); }
-    if(audioCtx.state === "suspended"){ audioCtx.resume(); }
+    if(!ytPlayer){ loadYouTubeAPI(); }
 
     if(!playing){
-      musicNodes.master.gain.cancelScheduledValues(audioCtx.currentTime);
-      musicNodes.master.gain.linearRampToValueAtTime(0.09, audioCtx.currentTime + 1.2);
+      if(ytReady){ ytPlayer.playVideo(); } else { pendingPlay = true; }
       playing = true;
       musicLabel.textContent = "pausar";
       musicBtn.setAttribute("aria-pressed", "true");
     } else {
-      musicNodes.master.gain.cancelScheduledValues(audioCtx.currentTime);
-      musicNodes.master.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.9);
+      if(ytReady){ ytPlayer.pauseVideo(); }
+      pendingPlay = false;
       playing = false;
       musicLabel.textContent = "música";
       musicBtn.setAttribute("aria-pressed", "false");
