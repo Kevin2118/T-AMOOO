@@ -6,88 +6,88 @@
 <title>Para Miniña 💛</title>
 <style>
   /* ============================================================
-     BASE / TOKENS
+     TOKENS — paleta tipo fiesta, viva y alegre
      ============================================================ */
   :root{
-    --cream:      #FBF6EA;
-    --pale-yellow:#FCEFC0;
-    --pastel-green:#E1EAD2;
-    --sun:        #E9A93B;
-    --sun-light:  #F6D27A;
-    --sun-deep:   #C97F1F;
-    --stem:       #7C9A6B;
-    --stem-deep:  #5C7A4B;
-    --ink:        #4A4132;
-    --ink-soft:   #7A6E56;
-    --paper:      #FFFDF6;
-    --shadow:     rgba(120,95,40,0.18);
+    --cream:      #FFF8ED;
+    --sun:        #FFC93C;
+    --sun-deep:   #F5A623;
+    --coral:      #FF6F91;
+    --turquoise:  #2EC4B6;
+    --grape:      #9B5DE5;
+    --leaf:       #4FB477;
+    --ink:        #2D2A3D;
+    --ink-soft:   #6E6A85;
+    --paper:      #FFFFFF;
+    --shadow:     rgba(155, 93, 229, 0.22);
   }
 
   *{ box-sizing:border-box; }
   html,body{
     margin:0; padding:0; height:100%;
-    background:
-      radial-gradient(120% 90% at 15% 10%, var(--pale-yellow) 0%, transparent 55%),
-      radial-gradient(120% 90% at 85% 90%, var(--pastel-green) 0%, transparent 55%),
-      var(--cream);
-    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    background: var(--cream);
+    font-family: "Trebuchet MS", "Segoe UI", -apple-system, sans-serif;
     color: var(--ink);
     overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
   }
-  .serif{ font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif; }
+  .display{ font-family: "Comic Sans MS", "Trebuchet MS", "Segoe UI", sans-serif; font-weight:700; }
 
-  h1,h2,h3{ font-weight:500; margin:0; }
-
+  h1,h2,h3{ font-weight:700; margin:0; }
   button{ font-family:inherit; cursor:pointer; border:none; background:none; }
-  button:focus-visible, a:focus-visible{ outline:2px solid var(--sun-deep); outline-offset:3px; }
+  button:focus-visible, a:focus-visible{ outline:3px solid var(--grape); outline-offset:3px; }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
   }
 
-  /* ============================================================
-     LAYOUT SCAFFOLD
-     ============================================================ */
-  #stage{
-    position:relative;
-    min-height:100vh;
-    width:100%;
-    overflow:hidden;
+  /* fondo con manchas de color en movimiento lento */
+  #blobs{
+    position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;
   }
+  .blob{
+    position:absolute; border-radius:50%; filter: blur(60px); opacity:0.35;
+    animation: blobMove 18s ease-in-out infinite;
+  }
+  .blob-1{ width:340px; height:340px; background:var(--coral); top:-80px; left:-80px; animation-duration:20s; }
+  .blob-2{ width:300px; height:300px; background:var(--turquoise); bottom:-60px; right:-60px; animation-duration:24s; animation-delay:2s; }
+  .blob-3{ width:260px; height:260px; background:var(--grape); top:40%; left:60%; animation-duration:22s; animation-delay:4s; }
+  .blob-4{ width:220px; height:220px; background:var(--sun); bottom:20%; left:5%; animation-duration:19s; animation-delay:1s; }
+  @keyframes blobMove{
+    0%,100%{ transform: translate(0,0) scale(1); }
+    33%{ transform: translate(30px,-25px) scale(1.08); }
+    66%{ transform: translate(-20px,20px) scale(0.95); }
+  }
+
+  /* ============================================================
+     LAYOUT
+     ============================================================ */
+  #stage{ position:relative; min-height:100vh; width:100%; overflow:hidden; z-index:1; }
 
   .screen{
     position:absolute; inset:0;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding: 8vh 6vw;
-    text-align:center;
+    padding: 8vh 6vw; text-align:center;
     opacity:0; visibility:hidden; pointer-events:none;
-    transition: opacity 0.9s ease;
+    transition: opacity 0.8s ease;
   }
   .screen.active{ opacity:1; visibility:visible; pointer-events:auto; }
 
-  /* floating petal/particle layer sits behind content, above background */
-  #particles{
-    position:fixed; inset:0; pointer-events:none; z-index:2; overflow:hidden;
-  }
-  .particle{
-    position:absolute; top:-40px;
-    width:10px; height:14px;
-    background: linear-gradient(160deg, var(--sun-light), var(--sun));
-    border-radius: 60% 40% 55% 45% / 65% 55% 45% 35%;
-    opacity:0.75;
-    animation-name: fall, sway;
-    animation-timing-function: linear, ease-in-out;
+  #particles{ position:fixed; inset:0; pointer-events:none; z-index:2; overflow:hidden; }
+  .confetti{
+    position:absolute; top:-40px; opacity:0.9;
+    animation-name: confettiFall, confettiSpin;
+    animation-timing-function: linear, linear;
     animation-iteration-count: infinite, infinite;
     will-change: transform;
   }
-  @keyframes fall{
-    from{ transform: translateY(-5vh) rotate(0deg); }
-    to{ transform: translateY(110vh) rotate(340deg); }
+  @keyframes confettiFall{
+    from{ transform: translateY(-5vh); }
+    to{ transform: translateY(110vh); }
   }
-  @keyframes sway{
-    0%,100%{ margin-left:0; }
-    50%{ margin-left: 28px; }
+  @keyframes confettiSpin{
+    from{ rotate: 0deg; }
+    to{ rotate: 360deg; }
   }
 
   /* ============================================================
@@ -97,248 +97,235 @@
     position:fixed; inset:0; z-index:50;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     background: var(--cream);
-    transition: opacity 0.7s ease;
+    transition: opacity 0.6s ease;
   }
   #loader.hide{ opacity:0; pointer-events:none; }
-  .loader-flower{
-    width:46px; height:46px;
-    animation: spin 1.6s linear infinite;
+  .loader-flower{ width:52px; height:52px; animation: spinBounce 1.3s ease-in-out infinite; }
+  @keyframes spinBounce{
+    0%,100%{ transform: rotate(0deg) scale(1); }
+    50%{ transform: rotate(180deg) scale(1.15); }
   }
-  @keyframes spin{ to{ transform:rotate(360deg); } }
-  .loader-text{
-    margin-top:18px; font-size:0.85rem; letter-spacing:0.04em; color: var(--ink-soft);
-  }
+  .loader-text{ margin-top:16px; font-size:0.95rem; color: var(--grape); font-weight:700; }
 
   /* ============================================================
      MUSIC TOGGLE
      ============================================================ */
   #music-toggle{
-    position:fixed; top:18px; right:18px; z-index:40;
+    position:fixed; top:16px; right:16px; z-index:40;
     display:flex; align-items:center; gap:8px;
     background: var(--paper);
-    border:1px solid rgba(150,120,50,0.18);
+    border:2px solid var(--sun);
     border-radius: 999px;
     padding:9px 16px 9px 12px;
-    box-shadow: 0 6px 18px var(--shadow);
-    font-size:0.8rem; color: var(--ink-soft);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 8px 20px var(--shadow);
+    font-size:0.82rem; font-weight:700; color: var(--grape);
+    transition: transform 0.25s cubic-bezier(.5,1.8,.5,1);
   }
-  #music-toggle:hover{ transform: translateY(-2px); box-shadow: 0 10px 22px var(--shadow); }
-  #music-toggle .note-icon{ width:16px; height:16px; }
+  #music-toggle:hover{ transform: scale(1.08) rotate(-3deg); }
+  #music-toggle .note-icon{ width:16px; height:16px; color: var(--coral); }
   #music-toggle .note-icon svg{ display:block; width:100%; height:100%; }
 
   /* ============================================================
      SCREEN 1 — PORTADA
      ============================================================ */
-  .eyebrow-mini{
-    font-size:0.95rem; color: var(--sun-deep); margin-bottom:10px;
-  }
+  .eyebrow-mini{ font-size:1rem; color: var(--coral); margin-bottom:8px; font-weight:700; }
   .headline-1{
-    font-size: clamp(1.7rem, 5vw, 2.6rem);
-    line-height:1.35;
-    max-width: 14ch;
+    font-size: clamp(1.9rem, 6vw, 3rem);
+    line-height:1.3; max-width: 14ch;
+    background: linear-gradient(90deg, var(--coral), var(--sun-deep), var(--grape));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation: wiggleText 3.5s ease-in-out infinite;
+  }
+  @keyframes wiggleText{
+    0%,100%{ transform: rotate(-0.6deg); }
+    50%{ transform: rotate(0.6deg); }
   }
   .btn-primary{
     margin-top:44px;
-    background: linear-gradient(135deg, var(--sun-light), var(--sun));
-    color:#5B3B10;
-    padding: 16px 34px;
+    background: linear-gradient(135deg, var(--sun), var(--coral));
+    color:#fff;
+    padding: 18px 38px;
     border-radius: 999px;
-    font-size:1.02rem;
-    box-shadow: 0 12px 28px var(--shadow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size:1.08rem; font-weight:700;
+    box-shadow: 0 14px 0 var(--sun-deep), 0 20px 30px var(--shadow);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
-  .btn-primary:hover{ transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 34px var(--shadow); }
-  .btn-primary:active{ transform: translateY(0) scale(0.98); }
+  .btn-primary:hover{ transform: translateY(-4px); box-shadow: 0 18px 0 var(--sun-deep), 0 24px 34px var(--shadow); }
+  .btn-primary:active{ transform: translateY(6px); box-shadow: 0 8px 0 var(--sun-deep), 0 14px 24px var(--shadow); }
 
   .btn-secondary{
-    margin-top:36px;
-    color: var(--sun-deep);
-    padding: 13px 26px;
-    border-radius: 999px;
-    border: 1.5px solid var(--sun);
-    font-size:0.95rem;
-    background: transparent;
-    transition: background 0.3s ease, transform 0.3s ease;
+    margin-top:36px; color: #fff;
+    padding: 14px 28px; border-radius: 999px;
+    background: linear-gradient(135deg, var(--turquoise), var(--grape));
+    font-size:1rem; font-weight:700;
+    box-shadow: 0 10px 0 #6B3FA0, 0 16px 24px var(--shadow);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
-  .btn-secondary:hover{ background: rgba(233,169,59,0.12); transform: translateY(-2px); }
+  .btn-secondary:hover{ transform: translateY(-3px); }
+  .btn-secondary:active{ transform: translateY(5px); box-shadow: 0 5px 0 #6B3FA0, 0 10px 16px var(--shadow); }
 
   /* ============================================================
      SCREEN 2 — RAMO
      ============================================================ */
   #bouquet-wrap{
-    position:relative;
-    width: min(90vw, 440px);
-    aspect-ratio: 1 / 1;
-    filter: drop-shadow(0 18px 30px var(--shadow));
+    position:relative; width: min(90vw, 440px); aspect-ratio: 1/1;
+    filter: drop-shadow(0 18px 26px var(--shadow));
   }
   #bouquet-svg{ width:100%; height:100%; overflow:visible; }
 
   .flower-group{
-    transform-box: fill-box;
-    transform-origin: center;
-    transform: scale(0);
-    animation: bloom 1.1s cubic-bezier(.2,.9,.25,1.15) forwards;
+    transform-box: fill-box; transform-origin: center; transform: scale(0);
+    animation: bloomBounce 1s cubic-bezier(.34,1.9,.4,1) forwards;
   }
-  @keyframes bloom{
-    0%{ transform: scale(0) rotate(-8deg); opacity:0; }
-    60%{ transform: scale(1.08) rotate(2deg); opacity:1; }
-    100%{ transform: scale(1) rotate(0deg); opacity:1; }
+  @keyframes bloomBounce{
+    0%{ transform: scale(0) rotate(-15deg); opacity:0; }
+    55%{ transform: scale(1.18) rotate(6deg); opacity:1; }
+    75%{ transform: scale(0.94) rotate(-3deg); }
+    100%{ transform: scale(1) rotate(0deg); }
   }
   .flower-sway{
-    animation: flowerSway 4.5s ease-in-out infinite;
-    transform-box: fill-box;
-    transform-origin: bottom center;
+    animation: flowerSway 3.2s ease-in-out infinite;
+    transform-box: fill-box; transform-origin: bottom center;
   }
   @keyframes flowerSway{
-    0%,100%{ transform: rotate(-1.2deg); }
-    50%{ transform: rotate(1.4deg); }
+    0%,100%{ transform: rotate(-3deg); }
+    50%{ transform: rotate(3.5deg); }
   }
-  .stem-line{
-    stroke-dasharray: 240;
-    stroke-dashoffset: 240;
-    animation: growStem 0.9s ease forwards;
-  }
+  .stem-line{ stroke-dasharray:240; stroke-dashoffset:240; animation: growStem 0.8s ease forwards; }
   @keyframes growStem{ to{ stroke-dashoffset:0; } }
 
-  .message-block{ margin-top: 40px; max-width: 34ch; }
-  .msg-line{
-    font-size: clamp(1rem, 2.6vw, 1.2rem);
-    line-height:1.7;
-    opacity:0;
-    margin: 0 0 14px 0;
+  .sparkle{
+    position:absolute; pointer-events:none;
+    animation: sparklePop 1s ease forwards;
   }
-  .msg-line.show{ animation: fadeUp 1s ease forwards; }
-  @keyframes fadeUp{
-    from{ opacity:0; transform: translateY(14px); }
-    to{ opacity:1; transform: translateY(0); }
+  @keyframes sparklePop{
+    0%{ transform: scale(0) rotate(0deg); opacity:1; }
+    60%{ transform: scale(1.3) rotate(90deg); opacity:1; }
+    100%{ transform: scale(0.5) rotate(180deg); opacity:0; }
+  }
+
+  .message-block{ margin-top: 36px; max-width: 36ch; }
+  .msg-line{ font-size: clamp(1.02rem, 2.7vw, 1.24rem); line-height:1.7; opacity:0; margin:0 0 14px 0; font-weight:600; }
+  .msg-line.show{ animation: fadeUpBounce 0.8s cubic-bezier(.3,1.4,.4,1) forwards; }
+  @keyframes fadeUpBounce{
+    0%{ opacity:0; transform: translateY(22px) scale(0.92); }
+    70%{ opacity:1; transform: translateY(-4px) scale(1.02); }
+    100%{ opacity:1; transform: translateY(0) scale(1); }
   }
   .msg-title{
-    font-size: clamp(1.3rem, 3.6vw, 1.8rem);
-    margin: 6px 0 14px;
+    font-size: clamp(1.35rem, 3.8vw, 1.9rem);
+    margin: 6px 0 14px; color: var(--coral);
   }
 
   /* ============================================================
      SCREEN 3 — SOBRE / CARTA
      ============================================================ */
   #envelope-scene{
-    position:relative;
-    width: min(85vw, 320px);
-    height: min(60vw, 220px);
-    cursor:pointer;
+    position:relative; width: min(85vw, 320px); height: min(60vw, 220px); cursor:pointer;
+    animation: envelopeIdle 2.6s ease-in-out infinite;
   }
-  #envelope-scene.opened{ cursor:default; }
+  @keyframes envelopeIdle{
+    0%,100%{ transform: rotate(-1.5deg) translateY(0); }
+    50%{ transform: rotate(1.5deg) translateY(-6px); }
+  }
+  #envelope-scene.opened{ cursor:default; animation:none; }
   .envelope-body{
     position:absolute; inset:0;
-    background: linear-gradient(160deg, var(--paper), var(--pale-yellow));
-    border-radius: 10px;
-    box-shadow: 0 16px 30px var(--shadow);
+    background: linear-gradient(160deg, #fff, var(--cream));
+    border-radius: 14px; border: 3px solid var(--sun);
+    box-shadow: 0 16px 28px var(--shadow);
   }
   .envelope-flap{
     position:absolute; top:0; left:0; width:100%; height:60%;
-    background: linear-gradient(160deg, var(--sun-light), var(--sun));
+    background: linear-gradient(160deg, var(--coral), var(--sun));
     clip-path: polygon(0 0, 100% 0, 50% 100%);
     transform-origin: top center;
-    transition: transform 0.9s cubic-bezier(.4,.2,.2,1);
-    z-index:3;
-    border-radius: 10px 10px 0 0;
+    transition: transform 0.8s cubic-bezier(.4,.2,.2,1);
+    z-index:3; border-radius: 12px 12px 0 0;
   }
   #envelope-scene.opened .envelope-flap{ transform: rotateX(180deg); }
   .envelope-seal{
     position:absolute; top:38%; left:50%; transform:translate(-50%,-50%);
-    width:34px; height:34px; z-index:4;
-    transition: opacity 0.4s ease;
+    width:36px; height:36px; z-index:4; transition: opacity 0.4s ease;
   }
   #envelope-scene.opened .envelope-seal{ opacity:0; }
   .letter-paper{
-    position:absolute; left:6%; right:6%; bottom:6px;
-    height:88%;
-    background: var(--paper);
-    border-radius: 8px;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+    position:absolute; left:6%; right:6%; bottom:6px; height:88%;
+    background: var(--paper); border-radius: 10px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.06);
     transform: translateY(6%);
-    transition: transform 1s cubic-bezier(.2,.7,.25,1) 0.25s;
+    transition: transform 0.9s cubic-bezier(.2,.8,.25,1.1) 0.2s;
     z-index:2;
   }
-  #envelope-scene.opened .letter-paper{ transform: translateY(-78%); }
+  #envelope-scene.opened .letter-paper{ transform: translateY(-80%); }
 
-  .hint-text{
-    margin-top:22px; font-size:0.9rem; color: var(--ink-soft);
-    animation: pulse 2.4s ease-in-out infinite;
-  }
-  @keyframes pulse{ 0%,100%{opacity:0.55;} 50%{opacity:1;} }
+  .hint-text{ margin-top:22px; font-size:0.95rem; color: var(--grape); font-weight:700; animation: pulseHint 1.8s ease-in-out infinite; }
+  @keyframes pulseHint{ 0%,100%{opacity:0.6; transform:scale(1);} 50%{opacity:1; transform:scale(1.05);} }
 
   #letter-content{
-    max-width: 480px;
-    width: min(88vw, 480px);
-    background: var(--paper);
-    border-radius: 16px;
-    padding: 38px 32px;
+    max-width: 480px; width: min(88vw, 480px);
+    background: var(--paper); border-radius: 20px; padding: 38px 32px;
     box-shadow: 0 20px 40px var(--shadow);
-    opacity:0; transform: translateY(24px) scale(0.98);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    border-top: 6px solid var(--coral);
+    opacity:0; transform: translateY(24px) scale(0.96);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.3,1.3,.4,1);
     text-align:left;
   }
   #letter-content.show{ opacity:1; transform: translateY(0) scale(1); }
-  #letter-content p{
-    font-size: clamp(0.95rem, 2.2vw, 1.08rem);
-    line-height:1.85;
-    margin: 0 0 16px 0;
-    color: var(--ink);
-  }
-  #letter-content .signature{ margin-top:22px; color: var(--sun-deep); }
+  #letter-content p{ font-size: clamp(0.96rem, 2.2vw, 1.08rem); line-height:1.85; margin:0 0 16px 0; color: var(--ink); }
+  #letter-content .signature{ margin-top:22px; color: var(--grape); font-weight:700; }
 
   /* ============================================================
      SCREEN 4 — FINAL
      ============================================================ */
-  #final-flowers{
-    position:absolute; inset:0; pointer-events:none;
-    overflow:hidden;
-  }
+  #final-flowers{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
   .corner-flower{
-    position:absolute; width:70px; height:70px;
-    opacity:0; transform:scale(0);
-    animation: cornerBloom 1.2s ease forwards;
+    position:absolute; width:74px; height:74px; opacity:0; transform:scale(0);
+    animation: cornerBounce 1s cubic-bezier(.3,1.6,.4,1) forwards;
   }
-  @keyframes cornerBloom{ to{ opacity:0.9; transform:scale(1); } }
-
+  @keyframes cornerBounce{
+    0%{ opacity:0; transform:scale(0) rotate(-20deg); }
+    70%{ opacity:1; transform:scale(1.15) rotate(6deg); }
+    100%{ opacity:0.95; transform:scale(1) rotate(0deg); }
+  }
   .heart-float{
-    position:absolute; bottom:-30px;
-    color: var(--sun-deep);
-    opacity:0.7;
-    font-size: 1rem;
-    animation: heartUp 6s linear infinite;
+    position:absolute; bottom:-30px; opacity:0.85; font-size:1.1rem;
+    animation: heartUp 5.5s linear infinite;
   }
   @keyframes heartUp{
-    0%{ transform: translateY(0) scale(0.8); opacity:0; }
-    10%{ opacity:0.8; }
-    100%{ transform: translateY(-100vh) scale(1.1); opacity:0; }
+    0%{ transform: translateY(0) scale(0.8) rotate(0deg); opacity:0; }
+    10%{ opacity:0.9; }
+    100%{ transform: translateY(-100vh) scale(1.15) rotate(25deg); opacity:0; }
   }
 
-  .final-title{ font-size: clamp(1.4rem, 4vw, 2.1rem); max-width: 16ch; line-height:1.5; }
-  .final-sub{ margin-top:18px; font-size:1rem; color: var(--sun-deep); letter-spacing:0.02em; }
+  .final-title{
+    font-size: clamp(1.5rem, 4.2vw, 2.2rem); max-width: 16ch; line-height:1.5;
+    background: linear-gradient(90deg, var(--coral), var(--grape));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .final-sub{ margin-top:18px; font-size:1.1rem; color: var(--sun-deep); font-weight:700; letter-spacing:0.02em; }
 
   /* ============================================================
      SHARED SMALL UI
      ============================================================ */
-  .step-dots{
-    position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
-    display:flex; gap:8px; z-index:30;
-  }
-  .step-dots span{
-    width:6px; height:6px; border-radius:50%;
-    background: rgba(122,110,86,0.28);
-    transition: background 0.4s ease, transform 0.4s ease;
-  }
-  .step-dots span.on{ background: var(--sun-deep); transform: scale(1.3); }
+  .step-dots{ position:fixed; bottom:20px; left:50%; transform:translateX(-50%); display:flex; gap:9px; z-index:30; }
+  .step-dots span{ width:8px; height:8px; border-radius:50%; background: rgba(155,93,229,0.25); transition: background 0.4s ease, transform 0.4s ease; }
+  .step-dots span.on{ background: var(--coral); transform: scale(1.4); }
 
   @media (max-width:480px){
     .screen{ padding: 6vh 7vw; }
-    #music-toggle{ padding:7px 12px 7px 10px; font-size:0.72rem; }
+    #music-toggle{ padding:7px 12px 7px 10px; font-size:0.74rem; }
   }
 </style>
 </head>
 <body>
+
+<div id="blobs" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+</div>
 
 <!-- LOADER -->
 <div id="loader">
@@ -351,19 +338,17 @@
       <ellipse cx="50" cy="18" rx="12" ry="20" transform="rotate(240 50 50)"/>
       <ellipse cx="50" cy="18" rx="12" ry="20" transform="rotate(300 50 50)"/>
     </g>
-    <circle cx="50" cy="50" r="12" fill="var(--sun-deep)"/>
+    <circle cx="50" cy="50" r="12" fill="var(--coral)"/>
   </svg>
-  <div class="loader-text serif">preparando tu sorpresa…</div>
+  <div class="loader-text">preparando tu sorpresa…</div>
 </div>
 
-<!-- floating petals background -->
 <div id="particles" aria-hidden="true"></div>
 
-<!-- music toggle -->
 <button id="music-toggle" aria-pressed="false" aria-label="Activar música ambiental">
   <span class="note-icon">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-      <path id="note-path" d="M9 18V5l10-2v13" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M9 18V5l10-2v13" stroke-linecap="round" stroke-linejoin="round"/>
       <circle cx="6" cy="18" r="3"/>
       <circle cx="16" cy="16" r="3"/>
     </svg>
@@ -371,7 +356,6 @@
   <span id="music-label">música</span>
 </button>
 
-<!-- progress dots -->
 <div class="step-dots" id="step-dots">
   <span class="dot" data-step="0"></span>
   <span class="dot" data-step="1"></span>
@@ -383,8 +367,8 @@
 
   <!-- ============ SCREEN 1: PORTADA ============ -->
   <section class="screen active" id="screen-1">
-    <div class="eyebrow-mini serif">para ti</div>
-    <h1 class="headline-1 serif">Tengo algo para ti, Miniña 💛</h1>
+    <div class="eyebrow-mini">para ti ✨</div>
+    <h1 class="headline-1 display">Tengo algo para ti, Miniña 💛</h1>
     <button class="btn-primary" id="btn-open-gift">Abrir mi regalo 🌻</button>
   </section>
 
@@ -395,7 +379,7 @@
     </div>
     <div class="message-block" id="message-block">
       <p class="msg-line" data-idx="0">Sé que unas flores de verdad no pueden cruzar la distancia... así que tuve que mandarte unas virtuales 🌻💛</p>
-      <p class="msg-line msg-title serif" data-idx="1">Feliz Día de la Mejor Amiga, Miniña 💛</p>
+      <p class="msg-line msg-title display" data-idx="1">Feliz Día de la Mejor Amiga, Miniña 💛</p>
       <p class="msg-line" data-idx="2">Espero que algún día pueda darte estas flores en persona, pero mientras tanto, estas son para ti.</p>
     </div>
     <button class="btn-secondary" id="btn-open-message" style="display:none;">Abrir mi mensaje 💌</button>
@@ -408,20 +392,20 @@
       <div class="envelope-body"></div>
       <div class="envelope-flap"></div>
       <svg class="envelope-seal" viewBox="0 0 40 40">
-        <circle cx="20" cy="20" r="16" fill="var(--sun-deep)"/>
-        <text x="20" y="26" font-size="18" text-anchor="middle" fill="#FFF7E0" font-family="Georgia, serif">M</text>
+        <circle cx="20" cy="20" r="16" fill="var(--grape)"/>
+        <text x="20" y="26" font-size="18" text-anchor="middle" fill="#FFF7E0" font-family="Trebuchet MS, sans-serif">M</text>
       </svg>
     </div>
-    <div class="hint-text serif" id="envelope-hint">toca el sobre para abrirlo</div>
+    <div class="hint-text" id="envelope-hint">toca el sobre para abrirlo</div>
 
     <div id="letter-content" aria-live="polite">
-      <p class="serif" style="font-size:1.15rem;">Miniña 💛</p>
+      <p class="display" style="font-size:1.2rem; color:var(--coral);">Miniña 💛</p>
       <p>No quería dejar pasar este día sin darte aunque sea un pequeño detalle.</p>
       <p>Sé que estamos lejos y que unas flores de verdad no pueden aparecer mágicamente frente a tu puerta 😂, así que tuve que improvisar.</p>
       <p>Gracias por todas las conversaciones, las risas, los momentos y por hacer que mis días sean un poquito más divertidos.</p>
       <p>Así que sí... oficialmente te debo unas flores de verdad JAJAJA 🌻</p>
       <p>Por ahora, acepta estas virtuales.</p>
-      <p class="signature serif">Con cariño,<br>tu amigo de Perú 🇵🇪<br>para Miniña 💛</p>
+      <p class="signature">Con cariño,<br>tu amigo de Perú 🇵🇪<br>para Miniña 💛</p>
       <button class="btn-secondary" id="btn-go-final" style="margin-top:8px;">Continuar ✨</button>
     </div>
   </section>
@@ -429,8 +413,8 @@
   <!-- ============ SCREEN 4: FINAL ============ -->
   <section class="screen" id="screen-4">
     <div id="final-flowers" aria-hidden="true"></div>
-    <h2 class="final-title serif">Las flores son virtuales... pero el detalle es de verdad 💛🌻</h2>
-    <div class="final-sub serif">Para Miniña ✨</div>
+    <h2 class="final-title display">Las flores son virtuales... pero el detalle es de verdad 💛🌻</h2>
+    <div class="final-sub">Para Miniña ✨</div>
   </section>
 
 </div>
@@ -439,12 +423,10 @@
 (function(){
   "use strict";
 
-  /* ============================================================
-     UTILIDADES
-     ============================================================ */
   const $ = (sel, ctx) => (ctx||document).querySelector(sel);
   const $$ = (sel, ctx) => Array.from((ctx||document).querySelectorAll(sel));
   const rand = (min, max) => Math.random() * (max - min) + min;
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   const SVGNS = "http://www.w3.org/2000/svg";
   function svgEl(tag, attrs){
@@ -453,54 +435,51 @@
     return el;
   }
 
+  const PALETTE = ["#FFC93C", "#FF6F91", "#2EC4B6", "#9B5DE5", "#4FB477"];
+
   /* ============================================================
      LOADER
      ============================================================ */
   window.addEventListener("load", () => {
-    setTimeout(() => {
-      $("#loader").classList.add("hide");
-    }, 1100);
+    setTimeout(() => { $("#loader").classList.add("hide"); }, 1000);
   });
 
   /* ============================================================
-     PARTICULAS FLOTANTES (petalos de fondo)
+     CONFETI FLOTANTE DE FONDO (multicolor, con más movimiento)
      ============================================================ */
   const particlesLayer = $("#particles");
-  function spawnParticle(){
+  function spawnConfetti(){
     const p = document.createElement("div");
-    p.className = "particle";
-    const size = rand(6, 13);
+    p.className = "confetti";
+    const size = rand(7, 14);
+    const isRound = Math.random() > 0.5;
     p.style.width = size + "px";
-    p.style.height = (size * 1.4) + "px";
+    p.style.height = (isRound ? size : size * 1.5) + "px";
+    p.style.background = pick(PALETTE);
+    p.style.borderRadius = isRound ? "50%" : "3px";
     p.style.left = rand(0, 100) + "vw";
-    p.style.opacity = rand(0.35, 0.8);
-    const fallDur = rand(9, 17);
-    const swayDur = rand(2.5, 4.5);
-    p.style.animationDuration = fallDur + "s, " + swayDur + "s";
-    p.style.animationDelay = rand(0, 6) + "s, 0s";
+    p.style.opacity = rand(0.6, 0.95);
+    const fallDur = rand(6, 12);
+    const spinDur = rand(1.5, 3);
+    p.style.animationDuration = fallDur + "s, " + spinDur + "s";
+    p.style.animationDelay = rand(0, 4) + "s, 0s";
     particlesLayer.appendChild(p);
-    setTimeout(() => p.remove(), (fallDur + 6) * 1000);
+    setTimeout(() => p.remove(), (fallDur + 5) * 1000);
   }
-  // arranque suave: unos cuantos pétalos de entrada, luego ritmo lento continuo
-  for(let i=0;i<10;i++) setTimeout(spawnParticle, i*350);
-  setInterval(spawnParticle, 1400);
+  for(let i=0;i<14;i++) setTimeout(spawnConfetti, i*220);
+  setInterval(spawnConfetti, 900);
 
   /* ============================================================
-     NAVEGACION ENTRE PANTALLAS
+     NAVEGACION
      ============================================================ */
   const screens = ["screen-1","screen-2","screen-3","screen-4"];
   const dots = $$(".step-dots .dot");
   function goToScreen(idx){
-    screens.forEach((id, i) => {
-      $("#"+id).classList.toggle("active", i === idx);
-    });
+    screens.forEach((id, i) => { $("#"+id).classList.toggle("active", i === idx); });
     dots.forEach((d,i) => d.classList.toggle("on", i === idx));
   }
   goToScreen(0);
 
-  /* ============================================================
-     PANTALLA 1 -> 2 : ABRIR REGALO
-     ============================================================ */
   $("#btn-open-gift").addEventListener("click", () => {
     goToScreen(1);
     buildBouquet();
@@ -508,23 +487,21 @@
   });
 
   /* ============================================================
-     CONSTRUCCION DEL RAMO (SVG generado por JS)
+     RAMO DE FLORES (SVG generado por JS, con destello al abrir)
      ============================================================ */
   function petalGroup(size, colorA, colorB){
-    // una flor: 8 petalos + centro
     const g = svgEl("g", {});
     const petalCount = 8;
     for(let i=0;i<petalCount;i++){
       const angle = (360 / petalCount) * i;
       const petal = svgEl("ellipse", {
-        cx: 0, cy: -size*0.62,
-        rx: size*0.30, ry: size*0.62,
+        cx: 0, cy: -size*0.62, rx: size*0.30, ry: size*0.62,
         fill: i % 2 === 0 ? colorA : colorB,
         transform: `rotate(${angle})`
       });
       g.appendChild(petal);
     }
-    const center = svgEl("circle", { cx:0, cy:0, r: size*0.30, fill: "var(--sun-deep)" });
+    const center = svgEl("circle", { cx:0, cy:0, r: size*0.30, fill: "var(--coral)" });
     const centerGlow = svgEl("circle", { cx:0, cy:0, r: size*0.30, fill:"url(#centerGlow)" });
     g.appendChild(center);
     g.appendChild(centerGlow);
@@ -533,116 +510,124 @@
 
   function buildBouquet(){
     const svg = $("#bouquet-svg");
-    if(svg.dataset.built) return; // solo una vez
+    if(svg.dataset.built) return;
     svg.dataset.built = "1";
 
-    // definiciones (glow del centro)
     const defs = svgEl("defs", {});
     defs.innerHTML = `
       <radialGradient id="centerGlow" cx="35%" cy="35%" r="70%">
         <stop offset="0%" stop-color="#FFE9A8" stop-opacity="0.9"/>
-        <stop offset="100%" stop-color="#C97F1F" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#F5A623" stop-opacity="0"/>
       </radialGradient>
       <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
         <feGaussianBlur stdDeviation="6" result="blur"/>
-        <feMerge>
-          <feMergeNode in="blur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
       </filter>
     `;
     svg.appendChild(defs);
 
-    // punto base del ramo (donde se juntan los tallos)
     const baseX = 200, baseY = 370;
 
-    // posiciones de las flores en abanico
     const flowers = [
       { x:200, y:150, size:46, delay:0.0 },
-      { x:140, y:175, size:38, delay:0.18 },
-      { x:262, y:175, size:38, delay:0.18 },
-      { x:95,  y:225, size:32, delay:0.36 },
-      { x:307, y:225, size:32, delay:0.36 },
-      { x:160, y:120, size:30, delay:0.5 },
-      { x:242, y:120, size:30, delay:0.5 },
+      { x:140, y:175, size:38, delay:0.16 },
+      { x:262, y:175, size:38, delay:0.16 },
+      { x:95,  y:225, size:32, delay:0.32 },
+      { x:307, y:225, size:32, delay:0.32 },
+      { x:160, y:120, size:30, delay:0.46 },
+      { x:242, y:120, size:30, delay:0.46 },
     ];
 
-    // tallos (curvas hacia el punto base)
     const stemsGroup = svgEl("g", {});
-    flowers.forEach((f, i) => {
+    flowers.forEach((f) => {
       const path = svgEl("path", {
         d: `M ${baseX} ${baseY} Q ${(f.x+baseX)/2} ${(f.y+baseY)/2 + 20} ${f.x} ${f.y + f.size*0.5}`,
-        stroke: "var(--stem-deep)",
-        "stroke-width": 4,
-        fill: "none",
-        "stroke-linecap": "round",
-        class: "stem-line"
+        stroke: "var(--leaf)", "stroke-width": 4, fill: "none",
+        "stroke-linecap": "round", class: "stem-line"
       });
       path.style.animationDelay = (f.delay + 0.1) + "s";
       stemsGroup.appendChild(path);
     });
     svg.appendChild(stemsGroup);
 
-    // lazo / listón en la base
+    // lazo multicolor en la base
     const ribbon = svgEl("path", {
       d: `M ${baseX-26} ${baseY-6} Q ${baseX} ${baseY+18} ${baseX+26} ${baseY-6} L ${baseX+18} ${baseY+8} Q ${baseX} ${baseY+2} ${baseX-18} ${baseY+8} Z`,
-      fill: "var(--sun-deep)",
-      opacity: 0
+      fill: "var(--grape)", opacity: 0
     });
-    ribbon.style.transition = "opacity 0.8s ease 1.4s";
+    ribbon.style.transition = "opacity 0.7s ease 1.3s";
     svg.appendChild(ribbon);
-    requestAnimationFrame(() => { ribbon.style.opacity = "0.9"; });
+    requestAnimationFrame(() => { ribbon.style.opacity = "0.95"; });
 
-    // flores
     flowers.forEach((f) => {
       const wrapper = svgEl("g", { transform: `translate(${f.x},${f.y})`, filter:"url(#softGlow)" });
       const swayWrap = svgEl("g", { class:"flower-sway" });
       const bloomWrap = svgEl("g", { class:"flower-group" });
       bloomWrap.style.animationDelay = f.delay + "s";
-      const flower = petalGroup(f.size, "var(--sun-light)", "var(--sun)");
+      const flower = petalGroup(f.size, "#FFDE7A", "var(--sun)");
       bloomWrap.appendChild(flower);
       swayWrap.appendChild(bloomWrap);
       wrapper.appendChild(swayWrap);
       svg.appendChild(wrapper);
+
+      // destello de colores cuando la flor termina de aparecer
+      setTimeout(() => spawnSparkleBurst(f.x, f.y), (f.delay + 0.9) * 1000);
     });
 
-    // hojas simples cerca de la base
+    // hojas
     [ -50, 55 ].forEach((dx) => {
       const leaf = svgEl("ellipse", {
         cx: baseX + dx, cy: baseY - 40, rx: 24, ry: 10,
-        fill: "var(--stem)",
+        fill: "var(--leaf)",
         transform: `rotate(${dx > 0 ? -30 : 30} ${baseX+dx} ${baseY-40})`,
         opacity: 0
       });
-      leaf.style.transition = "opacity 0.9s ease 0.9s";
+      leaf.style.transition = "opacity 0.8s ease 0.8s";
       svg.appendChild(leaf);
-      requestAnimationFrame(() => { leaf.style.opacity = "0.85"; });
+      requestAnimationFrame(() => { leaf.style.opacity = "0.9"; });
     });
   }
 
+  function spawnSparkleBurst(cx, cy){
+    const svg = $("#bouquet-svg");
+    for(let i=0;i<4;i++){
+      const angle = rand(0, 360);
+      const dist = rand(18, 34);
+      const sx = cx + Math.cos(angle * Math.PI/180) * dist;
+      const sy = cy + Math.sin(angle * Math.PI/180) * dist;
+      const star = svgEl("path", {
+        d: "M0,-6 L1.6,-1.6 L6,0 L1.6,1.6 L0,6 L-1.6,1.6 L-6,0 L-1.6,-1.6 Z",
+        fill: pick(PALETTE),
+        transform: `translate(${sx},${sy}) scale(0.6)`,
+        class: "sparkle"
+      });
+      star.style.animationDelay = (i*0.05) + "s";
+      svg.appendChild(star);
+      setTimeout(() => star.remove(), 1200);
+    }
+  }
+
   /* ============================================================
-     REVELAR MENSAJES (efecto secuencial)
+     MENSAJES
      ============================================================ */
   function revealMessages(){
     const lines = $$(".msg-line");
-    const delays = [2600, 3900, 5200];
+    const delays = [2500, 3800, 5100];
     lines.forEach((line, i) => {
-      setTimeout(() => line.classList.add("show"), delays[i] || (i*1300+2600));
+      setTimeout(() => line.classList.add("show"), delays[i] || (i*1300+2500));
     });
     setTimeout(() => {
       const btn = $("#btn-open-message");
       btn.style.display = "inline-block";
-      btn.style.animation = "fadeUp 0.9s ease forwards";
-    }, 6100);
+      btn.style.animation = "fadeUpBounce 0.8s cubic-bezier(.3,1.4,.4,1) forwards";
+    }, 6000);
   }
 
-  /* ============================================================
-     PANTALLA 2 -> 3 : ABRIR MENSAJE (SOBRE)
-     ============================================================ */
-  $("#btn-open-message").addEventListener("click", () => {
-    goToScreen(2);
-  });
+  $("#btn-open-message").addEventListener("click", () => { goToScreen(2); });
 
+  /* ============================================================
+     SOBRE
+     ============================================================ */
   const envelopeScene = $("#envelope-scene");
   envelopeScene.addEventListener("click", openEnvelope);
   envelopeScene.setAttribute("tabindex", "0");
@@ -656,34 +641,38 @@
     if(envelopeScene.classList.contains("opened")) return;
     envelopeScene.classList.add("opened");
     $("#envelope-hint").style.opacity = "0";
-    setTimeout(() => {
-      $("#letter-content").classList.add("show");
-    }, 650);
+    setTimeout(() => { $("#letter-content").classList.add("show"); }, 600);
   }
 
-  /* ============================================================
-     PANTALLA 3 -> 4 : FINAL
-     ============================================================ */
   $("#btn-go-final").addEventListener("click", () => {
     goToScreen(3);
     buildFinalFlowers();
   });
 
+  /* ============================================================
+     FINAL
+     ============================================================ */
   function buildFinalFlowers(){
     const layer = $("#final-flowers");
     if(layer.dataset.built) return;
     layer.dataset.built = "1";
 
-    // florecitas en las esquinas / bordes
     const corners = [
       {top:"6%", left:"6%", delay:0.1},
-      {top:"8%", right:"8%", delay:0.35},
-      {bottom:"10%", left:"9%", delay:0.6},
-      {bottom:"7%", right:"7%", delay:0.85},
-      {top:"46%", left:"3%", delay:1.05},
-      {top:"42%", right:"4%", delay:1.25},
+      {top:"8%", right:"8%", delay:0.3},
+      {bottom:"10%", left:"9%", delay:0.5},
+      {bottom:"7%", right:"7%", delay:0.7},
+      {top:"46%", left:"3%", delay:0.9},
+      {top:"42%", right:"4%", delay:1.1},
     ];
-    corners.forEach((c) => {
+    const flowerColors = [
+      ["#FFDE7A", "var(--sun)"],
+      ["#FF9EB5", "var(--coral)"],
+      ["#8FE3DA", "var(--turquoise)"],
+      ["#C9A6F5", "var(--grape)"],
+    ];
+    corners.forEach((c, i) => {
+      const [cA, cB] = flowerColors[i % flowerColors.length];
       const wrap = document.createElement("div");
       wrap.className = "corner-flower";
       Object.assign(wrap.style, {
@@ -693,7 +682,7 @@
       });
       wrap.innerHTML = `
         <svg viewBox="0 0 100 100">
-          <g fill="var(--sun)">
+          <g fill="${cA}">
             <ellipse cx="50" cy="26" rx="14" ry="24"/>
             <ellipse cx="50" cy="26" rx="14" ry="24" transform="rotate(51 50 50)"/>
             <ellipse cx="50" cy="26" rx="14" ry="24" transform="rotate(102 50 50)"/>
@@ -702,27 +691,25 @@
             <ellipse cx="50" cy="26" rx="14" ry="24" transform="rotate(255 50 50)"/>
             <ellipse cx="50" cy="26" rx="14" ry="24" transform="rotate(306 50 50)"/>
           </g>
-          <circle cx="50" cy="50" r="13" fill="var(--sun-deep)"/>
+          <circle cx="50" cy="50" r="13" fill="${cB}"/>
         </svg>`;
       layer.appendChild(wrap);
     });
 
-    // corazones amarillos flotando
-    for(let i=0;i<9;i++){
+    for(let i=0;i<10;i++){
       const h = document.createElement("div");
       h.className = "heart-float";
-      h.textContent = "💛";
+      h.textContent = pick(["💛","💕","✨"]);
       h.style.left = rand(6,94) + "%";
       h.style.animationDelay = rand(0,5) + "s";
-      h.style.animationDuration = rand(5,8) + "s";
-      h.style.fontSize = rand(0.9, 1.6) + "rem";
+      h.style.animationDuration = rand(4.5,7.5) + "s";
+      h.style.fontSize = rand(0.9, 1.7) + "rem";
       layer.appendChild(h);
     }
   }
 
   /* ============================================================
-     MUSICA AMBIENTAL (Web Audio API — sin archivos externos)
-     No se reproduce automáticamente; requiere pulsar el botón.
+     MUSICA AMBIENTAL (Web Audio API — sin archivos externos, sin autoplay)
      ============================================================ */
   let audioCtx = null;
   let musicNodes = null;
@@ -734,50 +721,41 @@
     master.gain.value = 0.0001;
     master.connect(audioCtx.destination);
 
-    // acorde cálido suave (pad de 3 osciladores) + un lento LFO de volumen
-    const freqs = [196.00, 246.94, 329.63]; // G3, B3, E4 - acorde cálido
-    const oscillators = freqs.map((f) => {
+    const freqs = [220.00, 277.18, 329.63]; // acorde brillante y cálido
+    freqs.forEach((f) => {
       const osc = audioCtx.createOscillator();
-      osc.type = "sine";
+      osc.type = "triangle";
       osc.frequency.value = f;
       const g = audioCtx.createGain();
-      g.gain.value = 0.18;
-      osc.connect(g);
-      g.connect(master);
-      osc.start();
-      return { osc, g };
+      g.gain.value = 0.15;
+      osc.connect(g); g.connect(master); osc.start();
     });
 
-    // LFO muy lento para dar textura de "respiración"
     const lfo = audioCtx.createOscillator();
-    lfo.frequency.value = 0.07;
+    lfo.frequency.value = 0.12;
     const lfoGain = audioCtx.createGain();
     lfoGain.gain.value = 0.05;
-    lfo.connect(lfoGain);
-    lfoGain.connect(master.gain);
-    lfo.start();
+    lfo.connect(lfoGain); lfoGain.connect(master.gain); lfo.start();
 
-    return { master, oscillators, lfo };
+    return { master };
   }
 
   const musicBtn = $("#music-toggle");
   const musicLabel = $("#music-label");
 
   musicBtn.addEventListener("click", () => {
-    if(!audioCtx){
-      musicNodes = buildAmbientPad();
-    }
+    if(!audioCtx){ musicNodes = buildAmbientPad(); }
     if(audioCtx.state === "suspended"){ audioCtx.resume(); }
 
     if(!playing){
       musicNodes.master.gain.cancelScheduledValues(audioCtx.currentTime);
-      musicNodes.master.gain.linearRampToValueAtTime(0.09, audioCtx.currentTime + 1.4);
+      musicNodes.master.gain.linearRampToValueAtTime(0.09, audioCtx.currentTime + 1.2);
       playing = true;
       musicLabel.textContent = "pausar";
       musicBtn.setAttribute("aria-pressed", "true");
     } else {
       musicNodes.master.gain.cancelScheduledValues(audioCtx.currentTime);
-      musicNodes.master.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 1.0);
+      musicNodes.master.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.9);
       playing = false;
       musicLabel.textContent = "música";
       musicBtn.setAttribute("aria-pressed", "false");
